@@ -1,23 +1,20 @@
 'use strict';
 
 function getCandidate(candidate) {
-    fetch(`https://api.github.com/users/USERNAME/repos` + candidate)
+    fetch(`https://api.github.com/users/${candidate}/repos`)
     .then(response => response.json())
     .then(responseJson => {
-        if (responseJson.status == "success") {
             displayResults(responseJson);
-        } else {
-            alert('Something went wrong. Try again later.')
-        }
     })
     .catch(error => alert('Something went wrong. Try again later.'));
 }
 
 function displayResults(responseJson) {
     let templateStringList = "";
-    console.log(responseJson);
-    templateStringList += `<img src="${responseJson.message}" class="results-img">`;
-    //not grabbing image//
+    for (let i = 0; i < responseJson.length; i++) {
+        templateStringList += `<p class="result-name">${responseJson[i].name}"</p>
+        <p class="result-url"><a href="${responseJson[i].html_url}">${responseJson[i].html_url}</a></p>`;
+    }
     $('.results').html(templateStringList);
     $('.results').removeClass('hidden');
 }
